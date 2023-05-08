@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       nombre: DataTypes.STRING,
     },
-    {},
+    { tableName: 'materias',},
   );
 
   return materia;

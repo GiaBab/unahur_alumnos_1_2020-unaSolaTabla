@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
     });
 });
 
-const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
+const findMateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materia
     .findOne({
       attributes: ['id', 'nombre'],
@@ -39,7 +39,7 @@ const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
 };
 
 router.get('/:id', (req, res) => {
-  findCarrera(req.params.id, {
+  findMateria(req.params.id, {
     onSuccess: (materia) => res.send(materia),
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500),
@@ -63,7 +63,7 @@ router.put('/:id', (req, res) => {
           res.sendStatus(500);
         }
       });
-  findCarrera(req.params.id, {
+  findMateria(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500),
@@ -76,7 +76,7 @@ router.delete('/:id', (req, res) => {
       .destroy()
       .then(() => res.sendStatus(200))
       .catch(() => res.sendStatus(500));
-  findCarrera(req.params.id, {
+  findMateria(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500),
