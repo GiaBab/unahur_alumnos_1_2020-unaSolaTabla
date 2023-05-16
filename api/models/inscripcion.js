@@ -1,3 +1,4 @@
+'use strict';
 module.exports = (sequelize, DataTypes) => {
     const inscripcion = sequelize.define('inscripcion', {
         id_materia: DataTypes.INTEGER,
@@ -8,20 +9,18 @@ module.exports = (sequelize, DataTypes) => {
     
         //asociacion a carrera (pertenece a:)
     inscripcion.associate = function(models) {
-        inscripcion.hasMany(models.materia,  // Modelo al que pertenece
+        inscripcion.belongsTo(models.materia,  // Modelo al que pertenece
         {
-        as: 'materia',                 // nombre de mi relacion
-        foreignKey: 'id_inscripcion'       // campo con el que voy a igualar 
-        })
-    };
+        as: 'Inscripcion-Materia-Relacion',                 // nombre de mi relacion
+        foreignKey: 'id_materia'       // campo con el que voy a igualar 
+        }),
 
-    inscripcion.associate = function(models) {
-        inscripcion.hasMany(models.alumno,  // Modelo al que pertenece
+        inscripcion.belongsTo(models.alumno,  // Modelo al que pertenece
         {
-        as: 'alumno',                 // nombre de mi relacion
-        foreignKey: 'id_inscripcion'       // campo con el que voy a igualar 
+        as: 'Inscripcion-Alumno-Relacion',                 // nombre de mi relacion
+        foreignKey: 'id_alumno'       // campo con el que voy a igualar 
         })
     };
-    ///////////////////// 
+    
     return inscripcion;
 };

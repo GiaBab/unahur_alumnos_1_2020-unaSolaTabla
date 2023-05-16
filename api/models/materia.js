@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING,
     id_carrera: DataTypes.INTEGER
   }, {tableName: 'materias'});
+  
   materia.associate = function(models) {
-    
 
   	//asociacion a carrera (pertenece a:)
   	materia.belongsTo(models.carrera// modelo al que pertenece
@@ -13,12 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       as : 'Carrera-Relacionada',  // nombre de mi relacion
       foreignKey: 'id_carrera'     // campo con el que voy a igualar
     }),
-  	/////////////////////
-    materia.belongsTo(models.inscripcion// modelo al que pertenece
-    ,{
-      as : 'Inscripcion-Materia-Relacion',  // nombre de mi relacion
-      foreignKey: 'id_inscripcion'     // campo con el que voy a igualar
+    
+    materia.hasMany(models.inscripcion,// modelo al que pertenece
+    {
+      as : 'inscripcion',  // nombre de mi relacion
+      foreignKey: 'id_materia'     // campo con el que voy a igualar
     })
   };
+
   return materia;
 };

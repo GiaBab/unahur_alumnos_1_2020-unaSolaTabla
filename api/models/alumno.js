@@ -6,12 +6,12 @@ module.exports = (sequelize, DataTypes) => {
     
     alumno.associate = function(models) {    
   	//asociacion a carrera (pertenece a:)
-    alumno.belongsTo(models.inscripcion// modelo al que pertenece
-    ,{
-      as : 'Inscripcion-Alumno-Relacion',  // nombre de mi relacion
-      foreignKey: 'id_inscripcion'     // campo con el que voy a igualar
-    })
-  	/////////////////////
+      alumno.hasMany(models.inscripcion// modelo al que pertenece
+      ,{
+        as : 'inscripcion',  // nombre de mi relacion
+        foreignKey: 'id_alumno'     // campo con el que voy a igualar
+      })
+      /////////////////////
     };
     return alumno;
 };

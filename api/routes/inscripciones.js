@@ -4,10 +4,10 @@ const models = require('../models');
 
 router.get("/", (req, res,next) => {
 
-    models.inscripcion.findAll({attributes: ["id","nombre","id_alumno", "id_materia"],     
+    models.inscripcion.findAll({attributes: ["id","id_alumno", "id_materia"],     
       /////////se agrega la asociacion 
-        include:[{as:'Inscripcion-Alumno-Relacion', model:models.alumno, attributes: ["id","nombre"]}, {as:'Inscripcion-Materia-Relacion', model:models.materia, attributes: ["id","nombre"]}]
-        /* include:[{as:'Inscripcion-Relacion', model:models.materia, attributes: ["id","nombre"]}] */
+        include:[{as:'Inscripcion-Alumno-Relacion', model:models.alumno, attributes: ["id","nombre"]}], 
+        include:[{as:'Inscripcion-Materia-Relacion', model:models.materia, attributes: ["id","nombre"]}]
 
       ////////////////////////////////
 
