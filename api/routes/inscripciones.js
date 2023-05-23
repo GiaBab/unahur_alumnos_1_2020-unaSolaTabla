@@ -19,12 +19,12 @@ router.get("/", (req, res,next) => {
 router.post('/', (req, res) => {
     models.inscripcion
         .create({ id_alumno: req.body.id_alumno, id_materia: req.body.id_materia })
-        .then((materia) => res.status(201).send({ id: materia.id }))
+        .then((inscripcion) => res.status(201).send({ id: inscripcion.id }))
         .catch((error) => {
         if (error === 'SequelizeUniqueConstraintError: Validation error') {
             res
             .status(400)
-            .send('Bad request: existe otra materia con el mismo nombre');
+            .send('Bad request: existe otra inscripcion con el mismo nombre');
         } else {
             console.log(`Error al intentar insertar en la base de datos: ${error}`);
             res.sendStatus(500);
