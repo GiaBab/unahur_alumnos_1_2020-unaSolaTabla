@@ -7,6 +7,7 @@ router.get('/', (req, res) => {
     models.alumno
         .findAll({
         attributes: ['id', 'nombre'],
+        offset: 5, limit: 5
     })
     .then((alumnos) => res.send(alumnos))
     .catch(() => res.sendStatus(500));
