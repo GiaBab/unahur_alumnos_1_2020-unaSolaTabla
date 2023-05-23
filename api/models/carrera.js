@@ -3,8 +3,6 @@ module.exports = (sequelize, DataTypes) => {
   const carrera = sequelize.define('carrera', {
     nombre: DataTypes.STRING
   }, {});
-
-
   
   //codigo de asociacion  (tiene muchos:)
   carrera.associate = function(models) {

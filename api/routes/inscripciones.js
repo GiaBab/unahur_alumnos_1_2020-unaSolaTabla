@@ -6,8 +6,9 @@ router.get("/", (req, res,next) => {
 
     models.inscripcion.findAll({attributes: ["id","id_alumno", "id_materia"],     
       /////////se agrega la asociacion 
-        include:[{as:'Inscripcion-Alumno-Relacion', model:models.alumno, attributes: ["id","nombre"]}], 
-        include:[{as:'Inscripcion-Materia-Relacion', model:models.materia, attributes: ["id","nombre"]}],
+        include:[{as:'Inscripcion-Alumno-Relacion', model:models.alumno, attributes: ["id","nombre"]},
+        {as:'Inscripcion-Materia-Relacion', model:models.materia, attributes: ["id","nombre"]}], 
+
         offset: 5, limit: 5
       ////////////////////////////////
 
@@ -16,8 +17,8 @@ router.get("/", (req, res,next) => {
 
 
 router.post('/', (req, res) => {
-    models.materia
-        .create({ nombre: req.body.nombre })
+    models.inscripcion
+        .create({ id_alumno: req.body.id_alumno, id_materia: req.body.id_materia })
         .then((materia) => res.status(201).send({ id: materia.id }))
         .catch((error) => {
         if (error === 'SequelizeUniqueConstraintError: Validation error') {
@@ -34,7 +35,7 @@ router.post('/', (req, res) => {
 const findInscripcion = (id, { onSuccess, onNotFound, onError }) => {
     models.inscripcion
     .findOne({
-        attributes: ['id', 'nombre'],
+        attributes: ['id'],
         where: { id },
     })
     .then((inscripcion) => (inscripcion ? onSuccess(inscripcion) : onNotFound()))
