@@ -4,10 +4,14 @@ const models = require('../models');
 
 router.get('/', (req, res) => {
   console.log('Esto es un mensaje para ver en consola');
+  const limit = parseInt(req.query.limit) ;
+  const page = parseInt(req.query.page) ;
   models.carrera
     .findAll({
       attributes: ['id', 'nombre'],
-      offset: 5, limit: 5
+      offset:((page-1)*limit),
+      limit : limit,
+      subQuery:false
     })
     .then((carreras) => res.send(carreras))
     .catch(() => res.sendStatus(500));
