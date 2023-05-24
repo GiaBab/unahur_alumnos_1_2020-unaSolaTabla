@@ -17,7 +17,6 @@ router.get("/", (req, res,next) => {
     }).then(inscripciones => res.send(inscripciones)).catch(error => { return next(error)});
 });
 
-
 router.post('/', (req, res) => {
     models.inscripcion
         .create({ id_alumno: req.body.id_alumno, id_materia: req.body.id_materia })
@@ -37,7 +36,7 @@ router.post('/', (req, res) => {
 const findInscripcion = (id, { onSuccess, onNotFound, onError }) => {
     models.inscripcion
     .findOne({
-        attributes: ['id'],
+        attributes: ['id', 'id_alumno', 'id_materia'],
         where: { id },
     })
     .then((inscripcion) => (inscripcion ? onSuccess(inscripcion) : onNotFound()))
@@ -55,13 +54,13 @@ router.get('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
     const onSuccess = (inscripcion) =>
     inscripcion
-        .update({ nombre: req.body.nombre }, { fields: ['nombre'] })
+        .update({ id_alumno: req.body.id_alumno,  id_materia: req.body.id_materia }, { fields: ['id_alumno','id_materia'] })
         .then(() => res.sendStatus(200))
         .catch((error) => {
             if (error === 'SequelizeUniqueConstraintError: Validation error') {
             res
             .status(400)
-            .send('Bad request: existe otra materia con el mismo nombre');
+            .send('Bad request: existe otra inscipcion con el mismo Alumno y Materia');
         } else {
             console.log(
             `Error al intentar actualizar la base de datos: ${error}`,
