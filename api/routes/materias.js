@@ -40,14 +40,14 @@ const findmateria = (id, { onSuccess, onNotFound, onError }) => {
       attributes: ["id", "nombre"],
       where: { id }
     })
-    .then(materia => (materia ? onSuccess(materia) : onNotFound()))
+    .then(materia => (materia ? onSuccess(materia) : onNotFound(), logger.error("don't found")))
     .catch(() => onError());
 };
 
 router.get("/:id", (req, res) => {
   findmateria(req.params.id, {
     onSuccess: materia => res.send(materia),
-    onNotFound: () => res.sendStatus(404),
+    onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
     onError: () => res.sendStatus(500)
   });
 });
@@ -69,7 +69,7 @@ router.put("/:id", (req, res) => {
       });
     findmateria(req.params.id, {
     onSuccess,
-    onNotFound: () => res.sendStatus(404),
+    onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
     onError: () => res.sendStatus(500)
   });
 });
@@ -82,7 +82,7 @@ router.delete("/:id", (req, res) => {
       .catch(() => res.sendStatus(500));
   findmateria(req.params.id, {
     onSuccess,
-    onNotFound: () => res.sendStatus(404),
+    onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
     onError: () => res.sendStatus(500)
   });
 });

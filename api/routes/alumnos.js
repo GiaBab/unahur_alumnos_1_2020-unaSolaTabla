@@ -28,6 +28,7 @@ router.post('/', (req, res) => {
             logger.error(`Error al intentar insertar en la base de datos: ${error}`);
             res.sendStatus(500);
         }
+        logger.error(error);
     });
 });
 
@@ -37,14 +38,14 @@ const findAlumno = (id, { onSuccess, onNotFound, onError }) => {
         attributes: ['id', 'nombre', 'apellido'],
         where: { id },
     })
-    .then((alumno) => (alumno ? onSuccess(alumno) : onNotFound()))
+    .then((alumno) => (alumno ? onSuccess(alumno) : onNotFound(), logger.error("don't found")))
     .catch(() => onError(), logger.error(onError));
 };
 
 router.get('/:id', (req, res) => {
     findAlumno(req.params.id, {
         onSuccess: (alumno) => res.send(alumno),
-        onNotFound: () => res.sendStatus(404),
+        onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
         onError: () => res.sendStatus(500),
     });
 });
@@ -65,7 +66,7 @@ router.put('/:id', (req, res) => {
     });
     findAlumno(req.params.id, {
         onSuccess,
-        onNotFound: () => res.sendStatus(404),
+        onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
         onError: () => res.sendStatus(500),
     });
 });
@@ -78,7 +79,7 @@ router.delete('/:id', (req, res) => {
         .catch(() => res.sendStatus(500));
     findAlumno(req.params.id, {
         onSuccess,
-        onNotFound: () => res.sendStatus(404),
+        onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
         onError: () => res.sendStatus(500),
     });
 });

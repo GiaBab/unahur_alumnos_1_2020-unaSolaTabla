@@ -37,14 +37,14 @@ const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
       attributes: ['id', 'nombre'],
       where: { id },
     })
-    .then((carrera) => (carrera ? onSuccess(carrera) : onNotFound()))
+    .then((carrera) => (carrera ? onSuccess(carrera) : onNotFound(), logger.error("don't found")))
     .catch(() => onError());
 };
 
 router.get('/:id', (req, res) => {
   findCarrera(req.params.id, {
     onSuccess: (carrera) => res.send(carrera),
-    onNotFound: () => res.sendStatus(404),
+    onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
     onError: () => res.sendStatus(500),
   });
 });
@@ -64,7 +64,7 @@ router.put('/:id', (req, res) => {
       });
   findCarrera(req.params.id, {
     onSuccess,
-    onNotFound: () => res.sendStatus(404),
+    onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
     onError: () => res.sendStatus(500),
   });
 });
@@ -77,7 +77,7 @@ router.delete('/:id', (req, res) => {
       .catch(() => res.sendStatus(500));
   findCarrera(req.params.id, {
     onSuccess,
-    onNotFound: () => res.sendStatus(404),
+    onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
     onError: () => res.sendStatus(500),
   });
 });

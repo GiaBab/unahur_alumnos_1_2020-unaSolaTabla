@@ -38,14 +38,14 @@ const findInscripcion = (id, { onSuccess, onNotFound, onError }) => {
         attributes: ['id', 'id_alumno', 'id_materia'],
         where: { id },
     })
-    .then((inscripcion) => (inscripcion ? onSuccess(inscripcion) : onNotFound()))
+    .then((inscripcion) => (inscripcion ? onSuccess(inscripcion) : onNotFound(), logger.error("don't found")))
     .catch(() => onError());
 };
 
 router.get('/:id', (req, res) => {
     findInscripcion(req.params.id, {
     onSuccess: (inscripcion) => res.send(inscripcion),
-    onNotFound: () => res.sendStatus(404),
+    onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
     onError: () => res.sendStatus(500),
     });
 });
@@ -66,7 +66,7 @@ router.put('/:id', (req, res) => {
     });
     findInscripcion(req.params.id, {
         onSuccess,
-        onNotFound: () => res.sendStatus(404),
+        onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
         onError: () => res.sendStatus(500),
     });
 });
@@ -79,7 +79,7 @@ router.delete('/:id', (req, res) => {
         .catch(() => res.sendStatus(500));
     findInscripcion(req.params.id, {
         onSuccess,
-        onNotFound: () => res.sendStatus(404),
+        onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
         onError: () => res.sendStatus(500),
     });
 });
