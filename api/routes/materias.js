@@ -37,26 +37,30 @@ router.post("/", (req, res) => {
 const findmateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materia
     .findOne({
-      attributes: ["id", "nombre"],
+      attributes: ["id", "nombre", "id_carrera"],
       where: { id }
     })
-    .then(materia => (materia ? onSuccess(materia) : onNotFound(), logger.error("don't found")))
+    .then(materia => (materia ? onSuccess(materia) : onNotFound()))
     .catch(() => onError());
 };
 
 router.get("/:id", (req, res) => {
   findmateria(req.params.id, {
     onSuccess: materia => res.send(materia),
-    onNotFound: () => {res.sendStatus(404), logger.error("don't found")},
+    onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
   });
 });
 
 router.put("/:id", (req, res) => {
+  const {nombre, id_carrera} = req.body ;
+  const update = {} ;
+  if(nombre) update.nombre = nombre ;
+  if(id_carrera) update.id_carrera = id_carrera ; 
   const onSuccess = materia =>
     materia
-      .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
-      .then(() => res.sendStatus(200))
+      .update(update)
+      .then(() => res.sendStatus(200), logger.info('materia modificada'))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {
           res.status(400).send('Bad request: existe otra materia con el mismo nombre');

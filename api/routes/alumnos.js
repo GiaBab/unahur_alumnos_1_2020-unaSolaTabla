@@ -50,14 +50,19 @@ router.get('/:id', (req, res) => {
     });
 });
 
+
 router.put('/:id', (req, res) => {
+    const {nombre, apellido} = req.body ;
+    const update = {} ;
+    if(nombre) update.nombre = nombre ;
+    if(apellido) update.apellido = apellido ;
     const onSuccess = (alumno) =>
-        alumno
-        .update({ nombre: req.body.nombre}, { fields: ['nombre'] })
-        .update({ apellido: req.body.apellido}, { fields: ['apellido'] })
-        .then(() => res.sendStatus(200))
+         alumno
+        .update(update)
+        .then(() => res.sendStatus(200), logger.info('alumno modificado'))
         .catch((error) => {
             if (error === 'SequelizeUniqueConstraintError: Validation error') {
+                logger.error('Bad request: existe otro alumno con el mismo nombre y/o apellido')
                 res.status(400).send('Bad request: existe otro alumno con el mismo nombre y/o apellido');
             } else {
             logger.error(`Error al intentar actualizar la base de datos: ${error}`,);
