@@ -7,7 +7,7 @@ var carrerasRouter = require('./routes/carreras');
 var materiasRouter = require('./routes/materias');
 var alumnosRouter = require('./routes/alumnos');
 var inscripcionesRouter = require('./routes/inscripciones');
-
+var customLogger = require('./loggers');
 
 var app = express();
 
@@ -21,13 +21,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/mat', materiasRouter);
 app.use('/car', carrerasRouter);
 app.use('/alum', alumnosRouter);
 app.use('/ins', inscripcionesRouter);
 
+
 // catch 404 and forward to error handler
+
 app.use(function(req, res, next) {
   next(createError(404));
 });
@@ -37,7 +38,6 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
   res.render('error');

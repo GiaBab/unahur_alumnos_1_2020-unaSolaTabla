@@ -1,0 +1,33 @@
+
+2023-05-26T03:15:48.213Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:18:19.914Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:22:19.297Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:23:48.285Z [ERROR  ] - uncaughtException Cannot read properties of undefined (reading 'length')
+2023-05-26T03:23:48.364Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:24:52.006Z [ERROR  ] - uncaughtException Cannot read properties of undefined (reading 'length')
+2023-05-26T03:24:52.148Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:25:54.386Z [ERROR  ] - uncaughtException Cannot read properties of undefined (reading 'length')
+2023-05-26T03:25:54.465Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:27:11.201Z [ERROR  ] - uncaughtException Cannot read properties of undefined (reading 'length')
+2023-05-26T03:27:11.272Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:32:25.114Z [ERROR  ] - uncaughtException Cannot read properties of undefined (reading 'length')
+2023-05-26T03:32:25.275Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:34:30.018Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:35:59.655Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:37:12.696Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:38:22.203Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:39:53.156Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:40:04.827Z [ERROR  ] - uncaughtException logger.error is not a function
+2023-05-26T03:40:59.734Z [INFO   ] - Connection has been established successfully.
+2023-05-26T03:41:03.197Z [ERROR  ] - error: config is not defined
+2023-05-26T03:52:54.948Z [ERROR  ] - folderIdRegex is not defined
+2023-05-26T03:52:55.891Z [INFO   ] - Connection has been established successfully.
+2023-05-26T04:11:46.278Z [INFO   ] - Connection has been established successfully.
+2023-05-26T04:11:49.860Z [ERROR  ] - () => res.sendStatus(500)
+2023-05-26T04:16:12.921Z [INFO   ] - Connection has been established successfully.
+2023-05-26T04:16:22.704Z [ERROR  ] - () => res.sendStatus(500)
+2023-05-26T04:16:31.892Z [ERROR  ] - () => res.sendStatus(500)
+2023-05-26T04:19:46.755Z [INFO   ] - Connection has been established successfully.
+2023-05-26T04:19:51.097Z [ERROR  ] - () => res.sendStatus(500)
+2023-05-26T04:21:19.507Z [INFO   ] - Connection has been established successfully.
+2023-05-26T04:21:23.735Z [ERROR  ] - () => res.sendStatus(500)

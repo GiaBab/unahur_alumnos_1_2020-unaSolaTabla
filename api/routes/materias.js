@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const logger = require('../loggers');
 
 router.get("/", (req, res,next) => {
 
@@ -14,7 +15,7 @@ router.get("/", (req, res,next) => {
       subQuery:false
       ////////////////////////////////
 
-    }).then(materias => res.send(materias)).catch(error => { return next(error)});
+    }).then(materias => res.send(materias)).catch(error => {logger.error(error); return next(error)});
 });
 
 
@@ -24,10 +25,10 @@ router.post("/", (req, res) => {
     .then(materia => res.status(201).send({ id: materia.id }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
-        res.status(400).send('Bad request: existe otra materia con el mismo nombre')
+        res.status(400).send('Bad request: existe otra materia con el mismo nombre');
       }
       else {
-        console.log(`Error al intentar insertar en la base de datos: ${error}`)
+        logger.error(`Error al intentar insertar en la base de datos: ${error}`);
         res.sendStatus(500)
       }
     });
@@ -58,11 +59,12 @@ router.put("/:id", (req, res) => {
       .then(() => res.sendStatus(200))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {
-          res.status(400).send('Bad request: existe otra materia con el mismo nombre')
+          res.status(400).send('Bad request: existe otra materia con el mismo nombre');
+          logger.error('Bad request: existe otra materia con el mismo nombre');
         }
         else {
-          console.log(`Error al intentar actualizar la base de datos: ${error}`)
-          res.sendStatus(500)
+          logger.error(`Error al intentar actualizar la base de datos: ${error}`);
+          res.sendStatus(500);
         }
       });
     findmateria(req.params.id, {

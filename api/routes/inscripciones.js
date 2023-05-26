@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const logger = require('../loggers');
 
 router.get("/", (req, res,next) => {
     const limit = parseInt(req.query.limit) ;
@@ -14,7 +15,7 @@ router.get("/", (req, res,next) => {
         offset:((page-1)*limit),
         limit : limit,
         subQuery:false
-    }).then(inscripciones => res.send(inscripciones)).catch(error => { return next(error)});
+    }).then(inscripciones => res.send(inscripciones)).catch(error => {logger.error(error); return next(error)});
 });
 
 router.post('/', (req, res) => {
@@ -23,11 +24,9 @@ router.post('/', (req, res) => {
         .then((inscripcion) => res.status(201).send({ id: inscripcion.id }))
         .catch((error) => {
         if (error === 'SequelizeUniqueConstraintError: Validation error') {
-            res
-            .status(400)
-            .send('Bad request: existe otra inscripcion con el mismo nombre');
+            res.status(400).send('Bad request: existe otra inscripcion con el mismo nombre');
         } else {
-            console.log(`Error al intentar insertar en la base de datos: ${error}`);
+            logger.error(`Error al intentar insertar en la base de datos: ${error}`);
             res.sendStatus(500);
         }
     });
@@ -58,13 +57,10 @@ router.put('/:id', (req, res) => {
         .then(() => res.sendStatus(200))
         .catch((error) => {
             if (error === 'SequelizeUniqueConstraintError: Validation error') {
-            res
-            .status(400)
-            .send('Bad request: existe otra inscipcion con el mismo Alumno y Materia');
+            res.status(400).send('Bad request: existe otra inscripcion con el mismo Alumno y Materia');
+            logger.error('Bad request: existe otra inscripcion con el mismo alumno y Materia');
         } else {
-            console.log(
-            `Error al intentar actualizar la base de datos: ${error}`,
-            );
+            logger.error(`Error al intentar actualizar la base de datos: ${error}`,);
             res.sendStatus(500);
         }
     });

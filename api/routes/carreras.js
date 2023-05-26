@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const logger = require('../loggers');
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   console.log('Esto es un mensaje para ver en consola');
   const limit = parseInt(req.query.limit) ;
   const page = parseInt(req.query.page) ;
@@ -13,8 +14,7 @@ router.get('/', (req, res) => {
       limit : limit,
       subQuery:false
     })
-    .then((carreras) => res.send(carreras))
-    .catch(() => res.sendStatus(500));
+    .then((carreras) => res.send(carreras)).catch(error => {logger.error(error); return netx(error)});
 });
 
 router.post('/', (req, res) => {
@@ -23,11 +23,9 @@ router.post('/', (req, res) => {
     .then((carrera) => res.status(201).send({ id: carrera.id }))
     .catch((error) => {
       if (error === 'SequelizeUniqueConstraintError: Validation error') {
-        res
-          .status(400)
-          .send('Bad request: existe otra carrera con el mismo nombre');
+        res.status(400).send('Bad request: existe otra carrera con el mismo nombre');
       } else {
-        console.log(`Error al intentar insertar en la base de datos: ${error}`);
+        logger.error(`Error al intentar insertar en la base de datos: ${error}`);
         res.sendStatus(500);
       }
     });
@@ -58,13 +56,9 @@ router.put('/:id', (req, res) => {
       .then(() => res.sendStatus(200))
       .catch((error) => {
         if (error === 'SequelizeUniqueConstraintError: Validation error') {
-          res
-            .status(400)
-            .send('Bad request: existe otra carrera con el mismo nombre');
+          res.status(400).send('Bad request: existe otra carrera con el mismo nombre');
         } else {
-          console.log(
-            `Error al intentar actualizar la base de datos: ${error}`,
-          );
+          logger.error(`Error al intentar actualizar la base de datos: ${error}`);
           res.sendStatus(500);
         }
       });
