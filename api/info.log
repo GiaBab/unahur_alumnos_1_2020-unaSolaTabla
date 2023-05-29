@@ -1,0 +1,7 @@
+GET /mat?page=1&limit=5 500 - - 1167.752 ms Mon, 29 May 2023 05:16:14 GMT application/json
+GET /mat?page=1&limit=5 200 - - 154.026 ms Mon, 29 May 2023 05:17:01 GMT application/json
+GET /mat?page=6&limit=5 200 - - 11.329 ms Mon, 29 May 2023 05:17:13 GMT application/json
+GET /mat/1 200 - - 6.465 ms Mon, 29 May 2023 05:17:21 GMT application/json
+GET /mat/100 404 - - 3.299 ms Mon, 29 May 2023 05:17:27 GMT application/json
+POST /mat/100 404 - - 399.560 ms Mon, 29 May 2023 05:17:30 GMT application/json
+DELETE /mat/100 404 - - 6.107 ms Mon, 29 May 2023 05:17:39 GMT application/json

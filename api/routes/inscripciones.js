@@ -52,9 +52,13 @@ router.get('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+    const {id_alumno, id_materia} = req.body;
+    const update = {} ;
+    if(id_alumno) update.id_alumno = id_alumno ;
+    if(id_materia) update.id_materia = id_materia ;
     const onSuccess = (inscripcion) =>
     inscripcion
-        .update({ id_alumno: req.body.id_alumno,  id_materia: req.body.id_materia }, { fields: ['id_alumno','id_materia'] })
+        .update(update)
         .then(() => res.sendStatus(200))
         .catch((error) => {
             if (error === 'SequelizeUniqueConstraintError: Validation error') {

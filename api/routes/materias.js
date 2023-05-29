@@ -52,9 +52,13 @@ router.get("/:id", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
+  const {nombre, id_carrera} = req.body ;
+  const update = {} ;
+  if(nombre) update.nombre = nombre ;
+  if(id_carrera) update.id_carrera = id_carrera ; 
   const onSuccess = materia =>
     materia
-      .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
+      .update(update)
       .then(() => res.sendStatus(200))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {

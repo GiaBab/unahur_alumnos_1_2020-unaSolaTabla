@@ -7,7 +7,7 @@ var carrerasRouter = require('./routes/carreras');
 var materiasRouter = require('./routes/materias');
 var alumnosRouter = require('./routes/alumnos');
 var inscripcionesRouter = require('./routes/inscripciones');
-
+var fs = require('fs');
 
 var app = express();
 
@@ -15,7 +15,12 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'info.log'),{flags: 'a'})
+logger.token('type', function (req, res){
+  return req.headers['content-type']
+})
+
+app.use(logger(':method :url :status :res[content-lenght] - :response-time ms :date[web] :type', {stream:accessLogStream}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
