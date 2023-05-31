@@ -13,7 +13,5 @@ module.exports = (sequelize, DataTypes) => {
     })
   };
   ///////////////////////
-
-
   return carrera;
 };
