@@ -5,10 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+
 var carrerasRouter = require('./routes/carreras');
 var materiasRouter = require('./routes/materias');
 var alumnosRouter = require('./routes/alumnos');
 var inscripcionesRouter = require('./routes/inscripciones');
+var userRouter = require('./routes/users');
+
 var fs = require('fs');
 
 
@@ -56,6 +59,7 @@ app.use('/mat', materiasRouter);
 app.use('/car', carrerasRouter);
 app.use('/alum', alumnosRouter);
 app.use('/ins', inscripcionesRouter);
+app.use('/user', userRouter);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 

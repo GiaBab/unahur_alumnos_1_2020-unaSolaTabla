@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
     inscripcion.associate = function(models) {
         inscripcion.belongsTo(models.materia,  // Modelo al que pertenece
         {
-        as: 'Inscripcion-Materia-Relacion',                 // nombre de mi relacion
-        foreignKey: 'id_materia'       // campo con el que voy a igualar 
+            as: 'Inscripcion-Materia-Relacion',                 // nombre de mi relacion
+            foreignKey: 'id_materia'       // campo con el que voy a igualar 
         }),
 
         inscripcion.belongsTo(models.alumno,  // Modelo al que pertenece
         {
-        as: 'Inscripcion-Alumno-Relacion',                 // nombre de mi relacion
-        foreignKey: 'id_alumno'       // campo con el que voy a igualar 
+            as: 'Inscripcion-Alumno-Relacion',                 // nombre de mi relacion
+            foreignKey: 'id_alumno'       // campo con el que voy a igualar 
         })
     };
     

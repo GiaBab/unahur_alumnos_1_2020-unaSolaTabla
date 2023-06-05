@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       ,{
         as : 'inscripcion',  // nombre de mi relacion
         foreignKey: 'id_alumno'     // campo con el que voy a igualar
+      }),
+      alumno.hasOne(models.user,
+      {
+          as: 'user',
+          foreignkey: 'id_alumno'
       })
       /////////////////////
     };
