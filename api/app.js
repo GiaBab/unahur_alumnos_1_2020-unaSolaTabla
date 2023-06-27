@@ -11,6 +11,7 @@ var materiasRouter = require('./routes/materias');
 var alumnosRouter = require('./routes/alumnos');
 var inscripcionesRouter = require('./routes/inscripciones');
 var userRouter = require('./routes/users');
+var loginRouter = require('./routes/login');
 
 var fs = require('fs');
 
@@ -29,6 +30,20 @@ const options = {
 			{
 				url: "http://localhost:3001",
 			},
+		],
+		components: {
+		  securitySchemes: {
+			bearerAuth: {
+			  type: "http",
+			  scheme: "bearer",
+			  bearerFormat: "JWT",
+			},
+		  },
+		},
+		security: [
+		  {
+			bearerAuth: [],
+		  },
 		],
 	},
 	apis: ["./routes/*.js"],
@@ -60,6 +75,7 @@ app.use('/car', carrerasRouter);
 app.use('/alum', alumnosRouter);
 app.use('/ins', inscripcionesRouter);
 app.use('/user', userRouter);
+app.use('/login', loginRouter);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 

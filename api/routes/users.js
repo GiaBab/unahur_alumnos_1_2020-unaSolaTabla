@@ -1,7 +1,8 @@
 const express = require('express');
+var bcrypt = require('bcryptjs'); 
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const models = require('../models');
-
 /**
  * @swagger
  * components:
@@ -103,21 +104,36 @@ router.get('/', (req, res) => {
  *       500:
  *         description: Algún error del servidor
  */
-
 router.post('/', (req, res) => {
-    models.user
-        .create({ email: req.body.email, password: req.body.password, id_alumno: req.body.id_alumno})
-        .then((user) => res.status(201).send({ id: user.id }))
-        .catch((error) => {
-        if (error === 'SequelizeUniqueConstraintError: Validation error') {
-            res
-            .status(400)
-            .send('Bad request: existe otro User con el mismo email');
-        } else {
-            console.log(`Error al intentar insertar en la base de datos: ${error}`);
-            res.sendStatus(500);
-        }
-    });
+    try {
+        bcrypt.genSalt(10, function (err, salt) {
+            bcrypt.hash("B4c0/\/", salt, async function (err, hash) {
+                try {
+
+                    // Creación del usuario
+                    const newUser = await models.user.create({ email: req.body.email, password: hash, id_alumno: req.body.id_alumno });
+                    
+                    // Generar el token
+                    const token = jwt.sign({ userId: newUser.id }, 'secreto_del_token');
+                    
+                    // Asociar el token al usuario en la base de datos
+                    await models.user.update({ token: token }, { where: { id: newUser.id } });
+                    
+                    res.status(201).send({ id: newUser.id, message: 'Usuario creado exitosamente', token });
+                } catch (error) {
+                    if (error === 'SequelizeUniqueConstraintError: Validation error') {
+                        res.status(400).send('Bad request: existe otro User con el mismo email');
+                    } else {
+                        console.log(`Error al intentar insertar en la base de datos: ${error}`);
+                        res.sendStatus(500);
+                    }
+                }
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Error en el servidor' });
+    }
 });
 
 const findUser = (id, { onSuccess, onNotFound, onError }) => {
