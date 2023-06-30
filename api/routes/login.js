@@ -1,41 +1,34 @@
 const express = require('express');
 const models = require('../models');
 const router = express.Router();
-var bcrypt = require('bcryptjs'); 
+const bcrypt = require('bcryptjs'); 
+const jwt = require("jsonwebtoken");
 
-const compare = (token, userToken) => {
-    return token === userToken
-};
-
-
-router.get('/', async (req, res) => {
-    try {
-      const { email, token } = req.body;
-      const user = await models.user.findOne({
-        attributes: ['id', 'email', 'password', 'id_alumno', 'token'],
-        where: { email }
-      });
+router.get('/', (req, res) => {
   
-      if (!user) {
-        return res.status(404).send('Usuario no encontrado');
-      }
-  
-      console.log('token:', token);
-      console.log('user.token:', user.token);
-      const checkToken = await compare(token, user.token);
-
-  
-      if (checkToken) {
-        return res.send({
-          data: user,
-        });
-      } else {
-        return res.status(409).send('Usuario y/o Token inválido');
-      }
-    } catch (error) {
-      console.error(error);
-      return res.status(500).send({ error: 'Error en el servidor' });
+  const loginOn = (user, password) => {
+    if (bcrypt.compareSync(password, user.password)) {
+      const token = jwt.sign({ userId: user.id }, 'secreto_del_token');
+      res.send({user, message: 'Usuario logeado', token});
+    } else {
+      // Unauthorized Access
+      res.status(401).send('Contraseña incorrecta');
     }
-  });
+  }
+
+  let {email, password} = req.body;
+  models.user.findOne({
+    attributes: ['id', 'email', 'password', 'id_alumno'],
+    where: {email}
+  }).then(user => {
+    if (!user) {
+      res.status(404).send('Usuario con este correo no encontrado');
+    } else {
+      loginOn(user, password);
+    }}).catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    })
+});
   
 module.exports = router;

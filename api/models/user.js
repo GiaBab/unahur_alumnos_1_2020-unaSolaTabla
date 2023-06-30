@@ -3,8 +3,7 @@ module.exports = (sequelize, Datatypes) => {
     const user = sequelize.define('user', {
         email: Datatypes.STRING,
         id_alumno: Datatypes.INTEGER,
-        password: Datatypes.STRING,
-        token: Datatypes.STRING
+        password: Datatypes.STRING
     },{});
 
     user.associate = function(models) {

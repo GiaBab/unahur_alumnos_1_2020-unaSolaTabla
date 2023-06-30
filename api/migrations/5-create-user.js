@@ -13,14 +13,11 @@ module.exports = {
         },
         email: {
             allowNull: false,
+            unique: true,
             type: Sequelize.STRING
         },
         password: {
             allowNull: false,
-            type: Sequelize.STRING
-        },
-        token: {
-            allowNull: true,
             type: Sequelize.STRING
         },
         createdAt: {
