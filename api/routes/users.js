@@ -1,7 +1,6 @@
 const express = require('express');
-const bcrypt = require('bcryptjs'); 
+const userControllers = require('../controllers/userControllers');
 const router = express.Router();
-const models = require('../models');
 
 /**
  * @swagger
@@ -67,20 +66,7 @@ const models = require('../models');
  *                  
  */
 
-router.get('/', (req, res) => {
-    console.log('Esto es un mensaje para ver en consola');
-    const limit = parseInt(req.query.limit);
-    const page = parseInt(req.query.page);
-    models.user.findAll({
-        attributes: ['id', 'email', 'password', 'id_alumno'],
-        include:[{as:'user-alumno', model:models.alumno, attributes: ["id","nombre","apellido"]}],
-        offset:((page-1)*limit),
-        limit : limit,
-        subQuery:false
-    })
-    .then((users) => res.send(users))
-    .catch(() => res.sendStatus(500));
-});
+router.get('/', userControllers.getUsers);
 
 /**
  * @swagger
@@ -104,37 +90,7 @@ router.get('/', (req, res) => {
  *       500:
  *         description: Algún error del servidor
  */
-router.post('/', (req, res) => {
-    const {email, password, id_alumno} = req.body ;
-    
-    const caseCompliment = (user)=> {
-        res.status(201).send({ id: user.id, message: 'Usuario creado exitosamente'}); 
-    }
-
-    var passHash = bcrypt.hashSync(password, 8); 
-        // Creación del usuario
-    models.user.create({ email: email, password: passHash, id_alumno: id_alumno })
-    .then((user) => caseCompliment(user))
-    .catch( (error) => {
-        if (error === 'SequelizeUniqueConstraintError: Validation error') {
-            res.status(400).send('Bad request: existe otro User con el mismo email');
-        } else {
-            console.log(`Error al intentar insertar en la base de datos: ${error}`);
-            res.sendStatus(500);
-        }
-    })
-});
-
-const findUser = (id, { onSuccess, onNotFound, onError }) => {
-    models.user
-        .findOne({
-        attributes: ['id', 'email', 'password', 'id_alumno'],
-        where: { id },
-    })
-    .then((user) => (user ? onSuccess(user) : onNotFound()))
-    .catch(() => onError());
-};
-
+router.post('/', userControllers.createUsers);
 
 /**
  * @swagger
@@ -160,13 +116,7 @@ const findUser = (id, { onSuccess, onNotFound, onError }) => {
  *         description: El User no fue encontrado
  */
 
-router.get('/:id', (req, res) => {
-    findUser(req.params.id, {
-        onSuccess: (user) => res.send(user),
-        onNotFound: () => res.sendStatus(404),
-        onError: () => res.sendStatus(500),
-    });
-});
+router.get('/:id', userControllers.getUser);
 
 
 /**
@@ -201,34 +151,7 @@ router.get('/:id', (req, res) => {
  *        description: Some error happened
  */
 
-router.put('/:id', (req, res) => {
-    const {email, password, id_alumno} = req.body ;
-    const update = {} ;
-    if(email) update.email = email ;
-    if(password) update.password = password ;
-    if(id_alumno) update.id_alumno = id_alumno ;
-    const onSuccess = (user) =>
-        user
-        .update(update)
-        .then(() => res.sendStatus(200))
-        .catch((error) => {
-            if (error === 'SequelizeUniqueConstraintError: Validation error') {
-            res
-                .status(400)
-                .send('Bad request: existe otro User con el mismo email y/o password');
-            } else {
-            console.log(
-                `Error al intentar actualizar la base de datos: ${error}`,
-            );
-            res.sendStatus(500);
-        }
-    });
-    findUser(req.params.id, {
-        onSuccess,
-        onNotFound: () => res.sendStatus(404),
-        onError: () => res.sendStatus(500),
-    });
-});
+router.put('/:id', userControllers.putUser);
 
 /**
  * @swagger
@@ -251,17 +174,6 @@ router.put('/:id', (req, res) => {
  *         description: El User no fue encontrado
  */
 
-router.delete('/:id', (req, res) => {
-    const onSuccess = (user) =>
-        User
-        .destroy()
-        .then(() => res.sendStatus(200))
-        .catch(() => res.sendStatus(500));
-    findUser(req.params.id, {
-        onSuccess,
-        onNotFound: () => res.sendStatus(404),
-        onError: () => res.sendStatus(500),
-    });
-});
+router.delete('/:id', userControllers.deleteUser);
 
 module.exports = router;
