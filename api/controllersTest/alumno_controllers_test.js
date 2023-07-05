@@ -10,7 +10,7 @@ const createAlumnoTest = (req, res) => {
     res.status(400).send('Bad request: existe otro Alumno con el mismo Nombre y Apellido');
   } else {
     // Envía una respuesta de éxito con los datos del nuevo alumno
-    res.status(200).send({ nombre: nuevoAlumno.nombre, apellido: nuevoAlumno.apellido });
+    res.status(201).send({ nombre: nuevoAlumno.nombre, apellido: nuevoAlumno.apellido });
   }
 };
 

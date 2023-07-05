@@ -11,7 +11,7 @@ const createCarreraTest = (req, res) => {
         res.status(400).send('Bad request: existe otra carrera con el mismo nombre');
     } else {
         // Envía una respuesta de éxito con los datos de la nueva carrera
-        res.status(200).send({ nombre: nuevaCarrera.nombre });
+        res.status(201).send({ nombre: nuevaCarrera.nombre });
     }
 };
 

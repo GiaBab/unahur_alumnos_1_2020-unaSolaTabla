@@ -40,7 +40,7 @@ describe('Pruebas para las Inscripciones', () => {
 
     createInscripcionTest(req, res);
 
-    assert.strictEqual(res.statusCode, 200);
+    assert.strictEqual(res.statusCode, 201);
     assert.deepStrictEqual(res.body.id_alumno, newInscripcionTest.id_alumno);
     assert.deepStrictEqual(res.body.id_materia, newInscripcionTest.id_materia);
   });

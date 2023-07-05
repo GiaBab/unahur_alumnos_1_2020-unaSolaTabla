@@ -40,7 +40,7 @@ describe('Pruebas de alumno', () => {
 
     createAlumnoTest(req, res);
 
-    assert.strictEqual(res.statusCode, 200);
+    assert.strictEqual(res.statusCode, 201);
     assert.deepStrictEqual(res.body.nombre, newAlumnoTest.nombre);
   });
 

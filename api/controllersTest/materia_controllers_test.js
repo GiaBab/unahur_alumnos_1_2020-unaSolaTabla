@@ -1,18 +1,7 @@
 const models = require('../models');
 
 const createMateria = (req, res) => {
-    models.materia
-      .create({ nombre: req.body.nombre, id_carrera: req.body.id_carrera })
-      .then(materia => res.status(201).send({ id: materia.id }))
-      .catch(error => {
-        if (error == "SequelizeUniqueConstraintError: Validation error") {
-          res.status(400).send('Bad request: existe otra materia con el mismo nombre')
-        }
-        else {
-          console.log(`Error al intentar insertar en la base de datos: ${error}`)
-          res.sendStatus(500)
-        }
-    });
+    
     const { nombre, id_carrera } = req.body;
 
     const nuevaMateria = { nombre: req.body.nombre, id_carrera: req.body.id_carrera };
@@ -25,7 +14,7 @@ const createMateria = (req, res) => {
     res.status(400).send('Bad request: existe otra materia con el mismo nombre');
   } else {
     // Envía una respuesta de éxito con los datos del nuevo usuario
-    res.status(200).send({ nombre: nuevaMateria.nombre, id_carrera: nuevaMateria.id_carrera});
+    res.status(201).send({ nombre: nuevaMateria.nombre, id_carrera: nuevaMateria.id_carrera});
   }
 };
 

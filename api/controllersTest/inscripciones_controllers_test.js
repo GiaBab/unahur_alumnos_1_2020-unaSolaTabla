@@ -13,7 +13,7 @@ const createInscripcionTest = (req, res) => {
     res.status(400).send('Bad request: existe una inscripcion de ese alumno a esa materia');
   } else {
     // Envía una respuesta de éxito con los datos de la nueva inscripcion.
-    res.status(200).send({ id_alumno: nuevaInscripcion.id_alumno, id_materia: nuevaInscripcion.id_materia });
+    res.status(201).send({ id_alumno: nuevaInscripcion.id_alumno, id_materia: nuevaInscripcion.id_materia });
   }
 
 

@@ -39,7 +39,7 @@ describe('Pruebas de carrera', () => {
 
     createCarreraTest(req, res);
 
-    assert.strictEqual(res.statusCode, 200);
+    assert.strictEqual(res.statusCode, 201);
     assert.deepStrictEqual(res.body.nombre, nuevaCarreraTest.nombre);
   });
 

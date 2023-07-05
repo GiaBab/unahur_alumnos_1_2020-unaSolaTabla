@@ -13,7 +13,7 @@ const createUsersTest = (req, res) => {
     res.status(400).send('Bad request: existe otro User con el mismo email');
   } else {
     // Envía una respuesta de éxito con los datos del nuevo usuario
-    res.status(200).send({ email: newUser.email, password: newUser.password, id_alumno: newUser.id_alumno });
+    res.status(201).send({ email: newUser.email, password: newUser.password, id_alumno: newUser.id_alumno });
   }
 };
 
